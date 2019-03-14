@@ -21,7 +21,7 @@
   (org-return)
   (org-set-property "muscle-target" "")
   (org-set-property "equipment" "")
-  (org-set-property "record-type" "")
+  (org-set-property "record-type" "") ;; choose duration or reps, toggle weight
   (org-insert-subheading t)
   (insert "Instructions")
   (org-return)
@@ -41,7 +41,7 @@
 ;; Tree view
 (defun browse-workouts ())
 
-;; Delete templates at each level. Delete from higher components (e.g. deleting an exercise will remove it from routines and programs, deleting a routine will remove it from programs), and include option to delete corresponding logs (default: no).
+;; Delete templates at each level.
 (defun delete-exercise ()
   "Delete EXERCISE from database.  Will remove from WORKOUTS and PROGRAMS; option to remove from LOGS is nil by default.")
 (defun delete-workout-routine ()
@@ -66,11 +66,14 @@
   (insert "|Exercise|Sets|Reps/Dur.|Weight|")
   (org-return)
   (insert "|-")
+  (org-table-insert-row)
   (org-return))
 
-(defun log-exercise-to-workout (workout)
-  "Add exercise from database to current WORKOUT log."
-  
+(defun log-exercise-to-workout (exercise)
+  "Add EXERCISE from database to current WORKOUT log."
+  (interactive)
+  (org-table-insert-row)
+  (insert (concat "[[file:" dbfile "::* " "][" exercise "]]"))
   )
 
 ;; DASHBOARD
@@ -78,6 +81,11 @@
 ;;
 
 ;; OPTIONS
+
+;; alists: valid property values for muscle-groups and equipment
+;; set defaults
+;; database file path
+;; log file path
 (provide 'org-fit)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
